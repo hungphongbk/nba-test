@@ -3,7 +3,7 @@ import { IMiddleware, Middleware, QueryParams, Req } from "@tsed/common";
 import QueryBuilder from "typeorm-express-query-builder";
 
 @Middleware()
-export class AcceptMimesMiddleware implements IMiddleware {
+export class QueryBuilderMiddleware implements IMiddleware {
   use(@Req() req: TsED.Request, @QueryParams() query: any): any {
     const builder = new QueryBuilder(query);
     req.ormQuery = builder.build();
