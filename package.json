@@ -37,6 +37,7 @@
     "method-override": "^3.0.0",
     "pg": "^8.5.1",
     "typeorm": "^0.2.31",
+    "typeorm-express-query-builder": "^1.2.0",
     "typeorm-seeding": "^1.6.1"
   },
   "devDependencies": {

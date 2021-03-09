@@ -12,8 +12,6 @@ import "@tsed/swagger";
 import "@tsed/typeorm";
 import typeormConfig from "./config/typeorm";
 
-import { IndexCtrl } from "./controllers/pages/IndexCtrl";
-
 export const rootDir = __dirname;
 export const isProduction = process.env.NODE_ENV === Env.PROD;
 
@@ -44,14 +42,9 @@ if (isProduction) {
     disableRoutesSummary: isProduction,
   },
   mount: {
-    "/rest": [`${rootDir}/controllers/**/*.ts`],
-    "/": [IndexCtrl],
+    "/rest": [`${rootDir}/controllers/**/*{.js,.ts}`],
   },
   swagger: [
-    {
-      path: "/v2/docs",
-      specVersion: "2.0",
-    },
     {
       path: "/v3/docs",
       specVersion: "3.0.1",
