@@ -1,11 +1,13 @@
 import { IMiddleware, Middleware, QueryParams, Req } from "@tsed/common";
 //@ts-ignore
-import QueryBuilder from "typeorm-express-query-builder";
+import { QueryBuilder } from "typeorm-express-query-builder";
+import qs from "qs";
 
 @Middleware()
 export class QueryBuilderMiddleware implements IMiddleware {
-  use(@Req() req: TsED.Request, @QueryParams() query: any): any {
-    const builder = new QueryBuilder(query);
+  use(@Req() req: Req, @QueryParams("query") query: string): any {
+    console.log(qs.parse(query));
+    const builder = new QueryBuilder(qs.parse(query));
     req.ormQuery = builder.build();
   }
 }

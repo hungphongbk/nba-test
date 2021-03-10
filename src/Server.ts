@@ -11,6 +11,8 @@ import "@tsed/ajv";
 import "@tsed/swagger";
 import "@tsed/typeorm";
 import typeormConfig from "./config/typeorm";
+import "./interfaces";
+//
 
 export const rootDir = __dirname;
 export const isProduction = process.env.NODE_ENV === Env.PROD;

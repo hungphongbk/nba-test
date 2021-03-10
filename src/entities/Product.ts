@@ -4,6 +4,7 @@ import { Property } from "@tsed/schema";
 @Entity()
 export class Product {
   @PrimaryGeneratedColumn("uuid")
+  @Property()
   id: string;
 
   @Column()
