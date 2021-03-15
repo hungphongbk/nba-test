@@ -1,15 +1,16 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "baseUrl": ".",
-    "outDir": "./dist",
+    "baseUrl": "./",
+    "outDir": "dist",
     "moduleResolution": "node",
-    "declaration": true,
+    "declaration": false,
     "noResolve": false,
     "preserveConstEnums": true,
     "sourceMap": true,
     "noEmit": false,
     "emitDeclarationOnly": false,
     "inlineSources": true
-  }
+  },
+  "exclude": ["test", "src/**/*.spec.ts"]
 }

@@ -14,20 +14,16 @@
 ###############################################################################
 ###############################################################################
 FROM node:12.13.0-alpine
+WORKDIR /usr/app/
 
-RUN apk update && apk add build-base git python
+RUN apk update
 
-COPY package.json .
-COPY yarn.lock .
-COPY ./src ./src
-COPY ./dist ./dist
-COPY ./resources ./resources
-COPY ./spec ./spec
+COPY package*.json ./
+RUN npm ci
+COPY . .
 
-RUN yarn install --production
+RUN npm run build
 
 EXPOSE 8081
-ENV PORT 8081
-ENV NODE_ENV production
 
-CMD ["yarn", "start:prod"]
+CMD ["npm", "start"]

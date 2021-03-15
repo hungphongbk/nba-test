@@ -1,5 +1,5 @@
 import { Env } from "@tsed/core";
-import { Configuration, Inject } from "@tsed/di";
+import { Configuration, Inject, InjectorService } from "@tsed/di";
 import { $log, PlatformApplication } from "@tsed/common";
 import "@tsed/platform-express"; // /!\ keep this import
 import bodyParser from "body-parser";
@@ -12,6 +12,10 @@ import "@tsed/swagger";
 import "@tsed/typeorm";
 import typeormConfig from "./config/typeorm";
 import "./interfaces";
+import { exec } from "child_process";
+import { promisify } from "util";
+import { ProductRepository } from "./repositories/ProductRepository";
+const execAsync = promisify(exec);
 //
 
 export const rootDir = __dirname;
@@ -38,7 +42,7 @@ if (isProduction) {
 @Configuration({
   rootDir,
   acceptMimes: ["application/json"],
-  httpPort: process.env.PORT || 8083,
+  httpPort: process.env.PORT || 8081,
   httpsPort: false, // CHANGE
   logger: {
     disableRoutesSummary: isProduction,
@@ -46,16 +50,13 @@ if (isProduction) {
   mount: {
     "/rest": [`${rootDir}/controllers/**/*{.js,.ts}`],
   },
+  componentsScan: [`${rootDir}/repositories/**/*{.js,.ts}`],
   swagger: [
     {
       path: "/v3/docs",
       specVersion: "3.0.1",
     },
   ],
-  views: {
-    root: `${rootDir}/../views`,
-    viewEngine: "ejs",
-  },
   typeorm: typeormConfig,
   exclude: ["**/*.spec.ts"],
 })
@@ -65,6 +66,9 @@ export class Server {
 
   @Configuration()
   settings: Configuration;
+
+  @Inject()
+  injector: InjectorService;
 
   $beforeRoutesInit(): void {
     this.app
@@ -78,5 +82,13 @@ export class Server {
           extended: true,
         })
       );
+  }
+
+  async $onReady(): Promise<void> {
+    const repository = this.injector.get<ProductRepository>(ProductRepository)!,
+      count = await repository.count();
+    if (!count) {
+      await execAsync("npm run dev:seeds");
+    }
   }
 }

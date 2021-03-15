@@ -16,9 +16,5 @@ module.exports = {
   entities: [`${rootDir}/entities/*{.js,.ts}`],
   migrations: [`${rootDir}/migrations/*{.js,.ts}`],
   seeds: [`${rootDir}/seeds/*{.js,.ts}`],
-  factories: [`${rootDir}/factories/*{.js,.ts}`],
-  cli: {
-    entitiesDir: `src/entities`,
-    migrationsDir: `src/migrations`,
-  },
+  factories: [`${rootDir}/factories/*{.js,.ts}`]
 };

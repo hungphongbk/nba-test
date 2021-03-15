@@ -7,13 +7,19 @@ import { Audit, AuditActionType } from "../entities/Audit";
 export class AuditMiddleware implements IMiddleware {
   @Inject()
   private repo: AuditRepository;
-  async use(@Req() request: Req, @EndpointInfo() endpoint: EndpointInfo): any {
+  async use(
+    @Req() request: Req,
+    @EndpointInfo() endpoint: EndpointInfo
+  ): Promise<any> {
     const [type] = endpoint.get<AuditActionType[]>(AuditMiddleware),
       audit = new Audit();
     audit.type = type;
     if (type === AuditActionType.VIEW_PRODUCT) {
       audit.data = request.param("id");
-    } else audit.data = JSON.stringify(request.ormQuery);
+    } else {
+      // @ts-ignore
+      audit.data = JSON.stringify(request.ormQuery);
+    }
     await this.repo.save(audit);
   }
 }

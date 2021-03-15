@@ -8,6 +8,7 @@ export class QueryBuilderMiddleware implements IMiddleware {
   use(@Req() req: Req, @QueryParams("query") query: string): any {
     console.log(qs.parse(query));
     const builder = new QueryBuilder(qs.parse(query));
+    // @ts-ignore
     req.ormQuery = builder.build();
   }
 }

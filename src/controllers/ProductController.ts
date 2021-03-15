@@ -29,6 +29,7 @@ export class ProductController {
   @UseAudit(AuditActionType.SEARCH)
   @(Returns(200, Array).Of(Product))
   get(@Req() req: Req, @QueryParams("query") query: string) {
+    // @ts-ignore
     return this.productRepo.find(req.ormQuery);
   }
 
